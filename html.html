@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فن توجيه الذكاء الاصطناعي - هندسة الأوامر</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* التنسيقات العامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            padding-top: 70px;
+        }
+        
+        /* الترويسة */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--secondary-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-right: 25px;
+        }
+        
+        nav ul li:last-child {
+            margin-right: 0;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary-color);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* المحتوى الرئيسي */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a2530 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid white;
+            margin-right: 15px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* الأقسام */
+        section {
+            padding: 60px 0;
+        }
+        
+        section:nth-child(even) {
+            background-color: #f0f4f8;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary-color);
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* بطاقات المحتوى */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .card-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .card-body ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .card-body ul li {
+            margin-bottom: 10px;
+            padding-right: 20px;
+            position: relative;
+        }
+        
+        .card-body ul li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+        
+        /* إطار العمل */
+        .framework {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .pillar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .pillar:hover {
+            transform: scale(1.05);
+        }
+        
+        .pillar:nth-child(1) { background-color: #3498db; }
+        .pillar:nth-child(2) { background-color: #2ecc71; }
+        .pillar:nth-child(3) { background-color: #e74c3c; }
+        .pillar:nth-child(4) { background-color: #f39c12; }
+        .pillar:nth-child(5) { background-color: #9b59b6; }
+        .pillar:nth-child(6) { background-color: #1abc9c; }
+        
+        .pillar-number {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .pillar-title {
+            font-size: 1.1rem;
+        }
+        
+        .pillar-detail {
+            display: none;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            border-right: 5px solid var(--secondary-color);
+        }
+        
+        .pillar-detail.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* الأمثلة العملية */
+        .examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .example {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid var(--secondary-color);
+        }
+        
+        .example h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .example h3 i {
+            color: var(--secondary-color);
+        }
+        
+        .example p {
+            margin-bottom: 15px;
+        }
+        
+        .example-bad, .example-good {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        
+        .example-bad {
+            background-color: #ffeaea;
+            border-right: 4px solid var(--accent-color);
+        }
+        
+        .example-good {
+            background-color: #eaffea;
+            border-right: 4px solid var(--success-color);
+        }
+        
+        /* الإحصائيات */
+        .stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .stat {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            min-width: 250px;
+            transition: transform 0.3s;
+        }
+        
+        .stat:hover {
+            transform: translateY(-10px);
+        }
+        
+        .stat-value {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        
+        /* نصائح احترافية */
+        .tips {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .tip {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+        
+        .tip-number {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        /* المحاكي التفاعلي */
+        .simulator {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+        
+        .simulator-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .simulator-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .simulator-reset {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .simulator-reset:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .simulator-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+        
+        .simulator-input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .simulator-pillars {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .simulator-pillar-select {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .simulator-pillar-select:hover {
+            background-color: #eef7ff;
+            border-color: var(--secondary-color);
+        }
+        
+        .simulator-pillar-select.active {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        
+        .simulator-output {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 20px;
+            min-height: 150px;
+            margin-top: 20px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            display: none;
+        }
+        
+        .simulator-output.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        /* التذييل */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* التجاوب مع الشاشات المختلفة */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            
+            .stats {
+                gap: 20px;
+            }
+            
+            .stat {
+                min-width: 200px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav ul {
+                position: fixed;
+                top: 70px;
+                right: 0;
+                background-color: var(--primary-color);
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav ul.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            nav ul li {
+                margin: 10px 0;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .framework {
+                gap: 15px;
+            }
+            
+            .pillar {
+                width: 130px;
+                height: 130px;
+            }
+            
+            .pillar-title {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .pillar {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .stat {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الترويسة -->
+    <header>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>هندسة الأوامر</span>
+                </div>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <nav>
+                    <ul id="navMenu">
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#framework">إطار العمل</a></li>
+                        <li><a href="#examples">أمثلة عملية</a></li>
+                        <li><a href="#simulator">المحاكي</a></li>
+                        <li><a href="#stats">إحصائيات</a></li>
+                        <li><a href="#resources">الموارد</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <!-- القسم الرئيسي -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>فن توجيه الذكاء الاصطناعي: هندسة الأوامر</h1>
+            <p>لماذا لا يفهمنا الذكاء الاصطناعي أحياناً؟ الإجابة تكمن في طريقة تواصلنا معه. اكتشف كيف تحول أوامرك العامة إلى أوامر مهندسة للحصول على نتائج دقيقة ومبتكرة.</p>
+            <a href="#framework" class="btn btn-secondary">اكتشف إطار العمل</a>
+            <a href="#simulator" class="btn">جرب المحاكي التفاعلي</a>
+        </div>
+    </section>
+    
+    <!-- إطار العمل -->
+    <section id="framework">
+        <div class="container">
+            <div class="section-title">
+                <h2>إطار العمل: الأركان الستة للأمر المثالي</h2>
+                <p>للحصول على نتائج دقيقة ومبدعة، يجب أن يتكون أمرك من ستة أركان أساسية تمنح الذكاء الاصطناعي السياق والتفاصيل اللازمة لفهم نيتك وتنفيذها بإتقان.</p>
+            </div>
+            
+            <div class="framework">
+                <div class="pillar" data-pillar="1">
+                    <div class="pillar-number">1</div>
+                    <div class="pillar-title">الهدف النهائي</div>
+                </div>
+                <div class="pillar" data-pillar="2">
+                    <div class="pillar-number">2</div>
+                    <div class="pillar-title">الدور أو الشخصية</div>
+                </div>
+                <div class="pillar" data-pillar="3">
+                    <div class="pillar-number">3</div>
+                    <div class="pillar-title">نطاق العمل</div>
+                </div>
+                <div class="pillar" data-pillar="4">
+                    <div class="pillar-number">4</div>
+                    <div class="pillar-title">المعرفة والسياق</div>
+                </div>
+                <div class="pillar" data-pillar="5">
+                    <div class="pillar-number">5</div>
+                    <div class="pillar-title">الأمثلة</div>
+                </div>
+                <div class="pillar" data-pillar="6">
+                    <div class="pillar-number">6</div>
+                    <div class="pillar-title">القيود</div>
+                </div>
+            </div>
+            
+            <div class="pillar-detail" id="pillarDetail">
+                <h3 id="detailTitle">الهدف النهائي</h3>
+                <p id="detailDescription">حدد بوضوح ماذا تريد. هل هي مهمة أم سؤال؟ ما هو المخرج النهائي (مقالة، صورة، مستند)؟ وما هو تنسيقه وطريقة الاستجابة (رسمية، أكاديمية، ودية)؟</p>
+                <div class="example-good" style="margin-top: 15px;">
+                    <strong>مثال جيد:</strong> "اكتب مقالة أكاديمية عن تأثير الذكاء الاصطناعي على التعليم، بحجم 1000 كلمة، بأسلوب رسمي مع ذكر المصادر."
+                </div>
+                <div class="example-bad" style="margin-top: 10px;">
+                    <strong>مثال غير جيد:</strong> "اكتب عن الذكاء الاصطناعي."
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- أمثلة عملية -->
+    <section id="examples">
+        <div class="container">
+            <div class="section-title">
+                <h2>أمثلة عملية من مختلف المجالات</h2>
+                <p>كيف تطبق إطار العمل الستة في مجالات مختلفة مثل التسويق والتصميم والمحتوى التقني.</p>
+            </div>
+            
+            <div class="examples">
+                <div class="example">
+                    <h3><i class="fas fa-bullhorn"></i> مثال تسويقي</h3>
+                    <p><strong>الهدف:</strong> كتابة منشور لتسويق دورة تدريبية</p>
+                    <div class="example-bad">
+                        <strong>أمر عام:</strong> "اكتب منشوراً لدورة تدريبية"
+                    </div>
+                    <div class="example-good">
+                        <strong>أمر مهندس:</strong> "أنت خبير تسويق متخصص في كتابة الإعلانات الجذابة. اكتب منشوراً لتسويق دورة تدريبية حول إدارة الوقت للموظفين. ركز على مشكلة الإرهاق التي يعاني منها الجمهور. لا تستخدم كلمات مبتذلة مثل 'فرصة لا تعوض'. ابدأ بسؤال يلامس مشاعر القارئ، مثل 'هل تشعر أن اليوم لا يكفي؟'"
+                    </div>
+                </div>
+                
+                <div class="example">
+                    <h3><i class="fas fa-paint-brush"></i> مثال تصميمي</h3>
+                    <p><strong>الهدف:</strong> تصميم ملصق لمهرجان فني</p>
+                    <div class="example-bad">
+                        <strong>أمر عام:</strong> "صمم ملصقاً لمهرجان فني"
+                    </div>
+                    <div class="example-good">
+                        <strong>أمر مهندس:</strong> "أنت مصمم جرافيك خبير بالخط العربي. صمم ملصقاً لمهرجان فني تراثي. استخدم خلفية تجريدية وألوان ترابية. لا تستخدم خطوطاً تقليدية: ابتكر. استلهم من أعمال الخطاط حسن المسعودي."
+                    </div>
+                </div>
+                
+                <div class="example">
+                    <h3><i class="fas fa-laptop-code"></i> مثال تقني</h3>
+                    <p><strong>الهدف:</strong> كتابة عناوين لمقالات تقنية</p>
+                    <div class="example-bad">
+                        <strong>أمر عام:</strong> "اكتب عناوين لمقالات عن الذكاء الاصطناعي"
+                    </div>
+                    <div class="example-good">
+                        <strong>أمر مهندس:</strong> "أنت متخصص في المحتوى في الشركات التقنية ولديك خبرة كبيرة في كتابة المحتوى. اكتب ثلاثة عناوين لمقالات حول مستقبل الذكاء الاصطناعي في قطاع الخدمات المالية. يجب أن تكون العناوين جذابة ومثيرة للاهتمام. تجنب العناوين العامة والمستهلكة. استخدم المصطلحات التقنية. اجعل الأسلوب مشابهاً لعناوين المقالات في مجلة فوربس أو الفاينانشال تايمز."
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- المحاكي التفاعلي -->
+    <section id="simulator">
+        <div class="container">
+            <div class="section-title">
+                <h2>محاكي هندسة الأوامر</h2>
+                <p>جرب بنفسك كيف يمكن تحويل الأمر العام إلى أمر مهندس باستخدام الأركان الستة.</p>
+            </div>
+            
+            <div class="simulator">
+                <div class="simulator-header">
+                    <div class="simulator-title">حوّل أمرك إلى أمر مهندس</div>
+                    <button class="simulator-reset" id="resetSimulator">بدء من جديد</button>
+                </div>
+                
+                <textarea class="simulator-input" id="commandInput" placeholder="اكتب أمرك العام هنا... مثال: اكتب لي مقالة عن التسويق الرقمي"></textarea>
+                
+                <div class="simulator-pillars" id="pillarSelectors">
+                    <div class="simulator-pillar-select" data-pillar="1">الهدف النهائي</div>
+                    <div class="simulator-pillar-select" data-pillar="2">الدور أو الشخصية</div>
+                    <div class="simulator-pillar-select" data-pillar="3">نطاق العمل</div>
+                    <div class="simulator-pillar-select" data-pillar="4">المعرفة والسياق</div>
+                    <div class="simulator-pillar-select" data-pillar="5">الأمثلة</div>
+                    <div class="simulator-pillar-select" data-pillar="6">القيود</div>
+                </div>
+                
+                <button class="btn" id="generateCommand" style="width: 100%;">أنشئ الأمر المهندس</button>
+                
+                <div class="simulator-output" id="commandOutput"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- الإحصائيات -->
+    <section id="stats">
+        <div class="container">
+            <div class="section-title">
+                <h2>هندسة الأوامر: مهنة المستقبل</h2>
+                <p>إتقان الحوار مع الذكاء الاصطناعي لم يعد خياراً. لقد أصبحت هندسة الأوامر وظيفة أساسية ومطلوبة في جميع القطاعات.</p>
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">2.5 مليار</div>
+                    <div class="stat-label">دولار حجم السوق المتوقع بحلول 2032</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">270,000</div>
+                    <div class="stat-label">دولار متوسط الراتب السنوي لمهندس الأوامر</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">+40%</div>
+                    <div class="stat-label">نمو الطلب على مهارة هندسة الأوامر</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- النصائح والموارد -->
+    <section id="resources">
+        <div class="container">
+            <div class="section-title">
+                <h2>نصائح احترافية وموارد تعليمية</h2>
+                <p>اكتشف كيف تطور مهاراتك في هندسة الأوامر وتستفيد من الذكاء الاصطناعي بشكل احترافي.</p>
+            </div>
+            
+            <div class="tips">
+                <div class="tip">
+                    <div class="tip-number">1</div>
+                    <h3>اجعل الذكاء الاصطناعي يحسن أوامرك</h3>
+                    <p>لست بحاجة للوصول إلى الأمر المثالي من المحاولة الأولى. استخدم الذكاء الاصطناعي كشريك في التفكير لتحسين طلبك.</p>
+                </div>
+                
+                <div class="tip">
+                    <div class="tip-number">2</div>
+                    <h3>اختر الأداة المناسبة</h3>
+                    <p>كل أداة لها نقاط قوة. استخدم Gemini للتعلم، Claude للبحث بالمصادر، وChatGPT للكتابة الإبداعية.</p>
+                </div>
+                
+                <div class="tip">
+                    <div class="tip-number">3</div>
+                    <h3>استخدم إعدادات الأداة</h3>
+                    <p>ذاكرة المحادثات السابقة والتعليمات المخصصة تؤثر على كل إجابة. استخدامها بوعي يحسن النتائج.</p>
+                </div>
+            </div>
+            
+            <div class="cards-container" style="margin-top: 50px;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>البدء السريع</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>ابدأ رحلتك نحو إتقان هندسة الأوامر بمصادر تعليمية مختارة:</p>
+                        <ul>
+                            <li>نماذج أوامر جاهزة</li>
+                            <li>دروس فيديو عملية</li>
+                            <li>مجتمع متخصص للدعم</li>
+                            <li>أدوات مجانية للتدريب</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>المستوى المتقدم</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>للمحترفين الذين يريدون الذهاب أبعد:</p>
+                        <ul>
+                            <li>بناء وكلاء ذكاء اصطناعي مخصصين</li>
+                            <li>أتمتة المهام المعقدة</li>
+                            <li>تحليل البيانات المتقدم</li>
+                            <li>تطوير تطبيقات الذكاء الاصطناعي</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>الموارد المجانية</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>احصل على موارد مجانية لتعزيز مهاراتك:</p>
+                        <ul>
+                            <li>كتاب إلكتروني مجاني</li>
+                            <li>قوالب قابلة للتعديل</li>
+                            <li>دورات قصيرة مجانية</li>
+                            <li>أدوات محاكاة وتدريب</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- التذييل -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>فن توجيه الذكاء الاصطناعي</h3>
+                    <p>منصة تعليمية متخصصة في هندسة الأوامر للذكاء الاصطناعي، تهدف إلى تمكين الأفراد والمنظمات من الاستفادة القصوى من تقنيات الذكاء الاصطناعي عبر تحسين مهارات التواصل معها.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#framework">إطار العمل</a></li>
+                        <li><a href="#examples">الأمثلة العملية</a></li>
+                        <li><a href="#simulator">المحاكي التفاعلي</a></li>
+                        <li><a href="#stats">الإحصائيات</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>موارد إضافية</h3>
+                    <ul>
+                        <li><a href="#">المدونة التعليمية</a></li>
+                        <li><a href="#">دورات مجانية</a></li>
+                        <li><a href="#">قوالب جاهزة</a></li>
+                        <li><a href="#">مجتمع الدعم</a></li>
+                        <li><a href="#">اتصل بنا</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2023 فن توجيه الذكاء الاصطناعي - جميع الحقوق محفوظة. | مستوحى من محتوى Taelum</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // تفعيل القائمة المتنقلة
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // إغلاق القائمة عند النقر على رابط
+        document.querySelectorAll('#navMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // بيانات الأركان الستة
+        const pillarsData = {
+            1: {
+                title: "الهدف النهائي",
+                description: "حدد بوضوح ماذا تريد. هل هي مهمة أم سؤال؟ ما هو المخرج النهائي (مقالة، صورة، مستند)؟ وما هو تنسيقه وطريقة الاستجابة (رسمية، أكاديمية، ودية)؟",
+                goodExample: '"اكتب مقالة أكاديمية عن تأثير الذكاء الاصطناعي على التعليم، بحجم 1000 كلمة، بأسلوب رسمي مع ذكر المصادر."',
+                badExample: '"اكتب عن الذكاء الاصطناعي."'
+            },
+            2: {
+                title: "الدور أو الشخصية",
+                description: "اطلب من الذكاء الاصطناعي أن يتقمص دور خبير. كن محدداً: 'أنت طبيب أطفال بخبرة 20 عاماً' بدلاً من 'أنت طبيب'. أضف تفاصيل مثل التخصص الدقيق، الخبرة، وحتى طريقة التفكير.",
+                goodExample: '"أنت خبير تسويق رقمي مع أكثر من 15 عاماً من الخبرة في تسويق تطبيقات الهواتف الذكية."',
+                badExample: '"أنت خبير تسويق."'
+            },
+            3: {
+                title: "نطاق العمل",
+                description: "هنا تضع التفاصيل العميقة للمهمة. أضف الخطوات، الخصائص، المنهجيات، أو الأفكار. إذا كنت تريد صورة، صف الإضاءة والكاميرا. إذا كنت تريد مقالة، حدد العناوين الفرعية والجمهور المستهدف.",
+                goodExample: '"اكتب مقالة مقسمة إلى 5 أقسام: المقدمة، التحديات، الحلول، دراسة حالة، الخاتمة. استهدف رواد الأعمال في مجال التكنولوجيا."',
+                badExample: '"اكتب مقالة طويلة."'
+            },
+            4: {
+                title: "المعرفة والسياق",
+                description: "زود الذكاء الاصطناعي بالمعلومات التي لا يمتلكها. معرفته ضخمة لكنها ثابتة. أرفق وثائق، أبحاث، سياسات الشركة، أو روابط لمصادر محددة ليعتمد عليها في إجابته.",
+                goodExample: '"استخدم بيانات من تقرير Gartner لعام 2023 عن اتجاهات الذكاء الاصطناعي، وراجع سياسة الخصوصية الخاصة بشركتنا المتوفرة في الرابط المرفق."',
+                badExample: '"استخدم أحدث المعلومات."'
+            },
+            5: {
+                title: "الأمثلة",
+                description: "أعطه أمثلة ليحاكيها، وليس فقط كمعرفة. 'اكتب بأسلوب نجيب محفوظ'، 'صمم موقعاً يشبه موقع Apple'. هذا يساعده على فهم الجودة والأسلوب الذي تريده.",
+                goodExample: '"اكتب بأسلوب مشابه لأسلوب الكاتب Malcolm Gladwell في كتابه The Tipping Point."',
+                badExample: '"اكتب بأسلوب جيد."'
+            },
+            6: {
+                title: "القيود",
+                description: "حدد ما يجب ألا يفعله. 'لا تستخدم كلمات معينة'، 'لا تخرج عن هذا الموضوع'. اطلب منه دائماً أن يتأكد من صحة إجابته قبل تقديمها.",
+                goodExample: '"لا تستخدم مصطلحات تقنية معقدة، لا تذكر منتجات المنافسين، تأكد من دقة جميع الإحصائيات قبل تضمينها."',
+                badExample: '"كن دقيقاً."'
+            }
+        };
+        
+        // تفعيل تفاعل الأركان
+        const pillars = document.querySelectorAll('.pillar');
+        const pillarDetail = document.getElementById('pillarDetail');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailDescription = document.getElementById('detailDescription');
+        
+        pillars.forEach(pillar => {
+            pillar.addEventListener('click', () => {
+                const pillarId = pillar.getAttribute('data-pillar');
+                const pillarInfo = pillarsData[pillarId];
+                
+                // تحديث تفاصيل الركن
+                detailTitle.textContent = pillarInfo.title;
+                detailDescription.textContent = pillarInfo.description;
+                
+                // إضافة الأمثلة
+                const goodExample = pillarDetail.querySelector('.example-good');
+                const badExample = pillarDetail.querySelector('.example-bad');
+                
+                goodExample.innerHTML = `<strong>مثال جيد:</strong> ${pillarInfo.goodExample}`;
+                badExample.innerHTML = `<strong>مثال غير جيد:</strong> ${pillarInfo.badExample}`;
+                
+                // تفعيل عرض التفاصيل
+                pillarDetail.classList.add('active');
+                
+                // إزالة التفعيل من جميع الأركان وإضافته للركن الحالي
+                pillars.forEach(p => p.style.transform = 'scale(1)');
+                pillar.style.transform = 'scale(1.1)';
+            });
+        });
+        
+        // تفعيل الركن الأول عند التحميل
+        pillars[0].click();
+        
+        // محاكي هندسة الأوامر
+        const commandInput = document.getElementById('commandInput');
+        const pillarSelectors = document.querySelectorAll('.simulator-pillar-select');
+        const generateCommandBtn = document.getElementById('generateCommand');
+        const commandOutput = document.getElementById('commandOutput');
+        const resetSimulatorBtn = document.getElementById('resetSimulator');
+        
+        // تفعيل اختيار الأركان في المحاكي
+        pillarSelectors.forEach(selector => {
+            selector.addEventListener('click', () => {
+                selector.classList.toggle('active');
+            });
+        });
+        
+        // توليد الأمر المهندس
+        generateCommandBtn.addEventListener('click', () => {
+            const baseCommand = commandInput.value.trim();
+            
+            if (!baseCommand) {
+                alert('يرجى إدخال أمر عام أولاً');
+                return;
+            }
+            
+            // جمع الأركان المختارة
+            const selectedPillars = [];
+            pillarSelectors.forEach(selector => {
+                if (selector.classList.contains('active')) {
+                    selectedPillars.push(selector.getAttribute('data-pillar'));
+                }
+            });
+            
+            if (selectedPillars.length === 0) {
+                alert('يرجى اختيار واحد على الأقل من أركان الأمر المهندس');
+                return;
+            }
+            
+            // بناء الأمر المهندس
+            let engineeredCommand = `بناءً على أمرك "${baseCommand}"، إليك الأمر المهندس باستخدام ${selectedPillars.length} من الأركان:\n\n`;
+            
+            selectedPillars.forEach(pillarId => {
+                const pillarInfo = pillarsData[pillarId];
+                engineeredCommand += `### ${pillarInfo.title}\n`;
+                engineeredCommand += `${pillarInfo.description}\n\n`;
+                
+                // إضافة أمثلة بناءً على الأمر المدخل
+                if (pillarId === '1') {
+                    engineeredCommand += `مثال مطبق: "حدد بوضوح الهدف من ${baseCommand}"\n\n`;
+                } else if (pillarId === '2') {
+                    engineeredCommand += `مثال مطبق: "تخيل أنك خبير متخصص في مجال ${baseCommand.split(' ')[0]}"\n\n`;
+                } else if (pillarId === '6') {
+                    engineeredCommand += `مثال مطبق: "تجنب المعلومات العامة غير المحددة عند الحديث عن ${baseCommand}"\n\n`;
+                } else {
+                    engineeredCommand += `\n`;
+                }
+            });
+            
+            engineeredCommand += `---\nالأمر المهندس الكامل:\n\n`;
+            engineeredCommand += `أنت خبير متخصص. ${baseCommand} مع مراعاة ما يلي:\n`;
+            
+            selectedPillars.forEach(pillarId => {
+                const pillarInfo = pillarsData[pillarId];
+                engineeredCommand += `- ${pillarInfo.title}: ${pillarInfo.description.split('.')[0]}.\n`;
+            });
+            
+            // عرض النتيجة
+            commandOutput.textContent = engineeredCommand;
+            commandOutput.classList.add('active');
+        });
+        
+        // إعادة تعيين المحاكي
+        resetSimulatorBtn.addEventListener('click', () => {
+            commandInput.value = '';
+            pillarSelectors.forEach(selector => selector.classList.remove('active'));
+            commandOutput.classList.remove('active');
+            commandOutput.textContent = '';
+        });
+        
+        // التمرير السلس للروابط الداخلية
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // إضافة تأثيرات عند التمرير
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY;
+            
+            // تأثيرات للعناصر عند الظهور
+            const elementsToAnimate = document.querySelectorAll('.card, .stat, .tip, .example');
+            
+            elementsToAnimate.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top + scrollPosition;
+                
+                if (scrollPosition > elementPosition - window.innerHeight + 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        });
+        
+        // تهيئة العناصر للتحريك
+        document.querySelectorAll('.card, .stat, .tip, .example').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.5s, transform 0.5s';
+        });
+        
+        // تشغيل التحريك بعد تحميل الصفحة
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                window.dispatchEvent(new Event('scroll'));
+            }, 100);
+        });
+    </script>
+</body>
+</html>
